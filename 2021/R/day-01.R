@@ -1,7 +1,8 @@
 
-x <- as.integer(readLines("data/day-01.txt"))
+day_01 <- function() {
+  x <- as.integer(readLines("data/day-01.txt"))
+  n <- length(x)
+  sum(x[seq(1, n - 1)] < x[seq(2, n)])
+}
 
-n <- length(x)
-res <- sum(x[seq(1, n - 1)] < x[seq(2, n)])
-
-stopifnot(identical(res, 1696L))
+stopifnot(identical(day_01(), 1696L))
