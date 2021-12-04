@@ -1,23 +1,26 @@
+
+
+# data --------------------------------------------------------------------
+
 x <- readLines("data/day-04.txt")
-
-make_board <- function(x) {
-  t(vapply(strsplit(trimws(x), "\\s+"), as.integer, integer(5)))
-}
-
-get_boards <- function(x) {
-  blank <- x == ""
-  board_id <- cumsum(blank)
-  boards <- split(x[!blank], board_id[!blank])
-  lapply(boards, make_board)
-}
-
-any_bingo <- function(mat) {
-  any(apply(mat, 1, all) | apply(mat, 2, all))
-}
 
 calls <- as.integer(strsplit(x[1], ",")[[1]])
 boards <- get_boards(x[-c(1:2)])
 game_boards <- rep(list(matrix(logical(25), ncol = 5)), length(boards))
+
+
+# solutions ---------------------------------------------------------------
+
+day_04a <- function(calls, boards, game_boards) {
+  play_bingo(calls = calls, boards = boards, game_boards = game_boards, method = "first")
+}
+
+day_04b <- function(calls, boards, game_boards) {
+  play_bingo(calls = calls, boards = boards, game_boards = game_boards, method = "last")
+}
+
+
+# helpers -----------------------------------------------------------------
 
 play_bingo <- function(calls, boards, game_boards, method = c("first", "last")) {
   method <- match.arg(method)
@@ -59,13 +62,23 @@ play_bingo <- function(calls, boards, game_boards, method = c("first", "last")) 
   sum(boards[[id]][!game_boards[[id]]]) * calls[i]
 }
 
-day_04a <- function(calls, boards, game_boards) {
-  play_bingo(calls, boards, game_boards, method = "first")
+make_board <- function(x) {
+  t(vapply(strsplit(trimws(x), "\\s+"), as.integer, integer(5)))
 }
 
-day_04b <- function(calls, boards, game_boards) {
-  play_bingo(calls, boards, game_boards, method = "last")
+get_boards <- function(x) {
+  blank <- x == ""
+  board_id <- cumsum(blank)
+  boards <- split(x[!blank], board_id[!blank])
+  lapply(boards, make_board)
 }
+
+any_bingo <- function(mat) {
+  any(apply(mat, 1, all) | apply(mat, 2, all))
+}
+
+
+# checks ------------------------------------------------------------------
 
 stopifnot(
   identical(day_04a(calls, boards, game_boards), 55770L),
