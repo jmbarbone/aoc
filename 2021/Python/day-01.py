@@ -19,7 +19,6 @@ def day_01b(x) :
 
 
 class testDay01(unittest.TestCase) :
-    x = np.loadtxt("data/day-01.txt", dtype=int)
 
     def test_day_01a(self) :
       self.assertEqual(day_01a(x), 1696)
@@ -29,4 +28,5 @@ class testDay01(unittest.TestCase) :
   
 
 if __name__ == '__main__':
+    x = np.loadtxt("data/day-01.txt", dtype=int)
     unittest.main()
