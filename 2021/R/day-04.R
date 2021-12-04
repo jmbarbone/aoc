@@ -19,9 +19,14 @@ calls <- as.integer(strsplit(x[1], ",")[[1]])
 boards <- get_boards(x[-c(1:2)])
 game_boards <- rep(list(matrix(logical(25), ncol = 5)), length(boards))
 
-day_04a <- function(calls, boards, game_boards) {
+play_bingo <- function(calls, boards, game_boards, method = c("first", "last")) {
+  method <- match.arg(method)
+  method_fun <- switch(method, first = "any", last = "all")
+  method_fun <- match.fun(method_fun)
+  
   bingo <- FALSE
   i <- 0L
+  winners <- integer()
   
   while (!bingo) {
     i <- i + 1L
@@ -34,7 +39,9 @@ day_04a <- function(calls, boards, game_boards) {
     
     if (i > 5) {
       bingo_search <- vapply(game_boards, any_bingo, NA)
-      bingo <- any(bingo_search)
+      # track the winners
+      winners <- unique(c(winners, which(bingo_search)))
+      bingo <- method_fun(bingo_search)
     }
     
     if (i > length(calls)) {
@@ -42,11 +49,26 @@ day_04a <- function(calls, boards, game_boards) {
     }
   }
   
-  id <- which(bingo_search)
+  n_winners <- length(winners)
+  
+  if (method == "first" && n_winners > 1) {
+    stop("whoops, can't have multiple winners")
+  } 
+  
+  id <- winners[n_winners]
   sum(boards[[id]][!game_boards[[id]]]) * calls[i]
 }
 
+day_04a <- function(calls, boards, game_boards) {
+  play_bingo(calls, boards, game_boards, method = "first")
+}
+
+day_04b <- function(calls, boards, game_boards) {
+  play_bingo(calls, boards, game_boards, method = "last")
+}
+
 stopifnot(
-  identical(day_04a(calls, boards, game_boards), 55770L)
+  identical(day_04a(calls, boards, game_boards), 55770L),
+  identical(day_04b(calls, boards, game_boards), 2980L)
 )
 
