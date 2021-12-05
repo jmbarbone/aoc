@@ -1,14 +1,4 @@
 
-
-# data --------------------------------------------------------------------
-
-x <- readLines("data/day-04.txt")
-
-calls <- as.integer(strsplit(x[1], ",")[[1]])
-boards <- get_boards(x[-c(1:2)])
-game_boards <- rep(list(matrix(logical(25), ncol = 5)), length(boards))
-
-
 # solutions ---------------------------------------------------------------
 
 day_04a <- function(calls, boards, game_boards) {
@@ -79,6 +69,13 @@ any_bingo <- function(mat) {
 
 
 # checks ------------------------------------------------------------------
+
+
+x <- readLines("data/day-04.txt")
+
+calls <- as.integer(strsplit(x[1], ",")[[1]])
+boards <- get_boards(x[-c(1:2)])
+game_boards <- rep(list(matrix(logical(25), ncol = 5)), length(boards))
 
 stopifnot(
   identical(day_04a(calls, boards, game_boards), 55770L),
