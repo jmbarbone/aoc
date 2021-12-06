@@ -7,25 +7,6 @@
 # 1 565 190
 # 2 756 381
 
-intersect_points <- function(m) {
-  x <- seq(m[1], m[2])
-  y <- seq(m[3], m[4])
-  
-  if (length(x) == 1L | length(y) == 1L) {
-    return(as.matrix(expand.grid(x, y)))
-  }
-  
-  if (length(x) != length(y)) {
-    stop("this is wrong?")
-  }
-  
-  cbind(x, y)
-}
-
-
-is_horizontal <- function(m) {
-  (m[1] == m[2]) | (m[3] == m[4])
-}
 
 x <- 
   readLines("data/day-05.txt") |>
@@ -36,31 +17,38 @@ x <-
     t(i)
   })
 
-head(x)
 
-# get only horizontal lines
-
-are_horizontal <- vapply(x, is_horizontal, NA)
-m <- x[!are_horizontal][[1]]
-
-
-n <- max(unlist(x))
-board <- matrix(0L, nrow = n, ncol = n)
-
-for (m in x[are_horizontal]) {
-  pos <- intersect_points(m)
-  board[pos] <- board[pos] + 1L
+day_05a <- function(x) {
+  do_solution(x[vapply(x, is_horizontal, NA)])
 }
 
-res <- sum(board >= 2)
-stopifnot(res == 8622)
-
-board <- matrix(0L, nrow = n, ncol = n)
-
-for (m in x) {
-  pos <- intersect_points(m)
-  board[pos] <- board[pos] + 1L
+day_05b <- function(x) {
+  do_solution(x)
 }
 
-res <- sum(board >= 2)
-stopifnot(res == 22037)
+do_solution <- function(x) {
+  n <- max(unlist(x))
+  board <- matrix(0L, nrow = n, ncol = n)
+  
+  for (m in x) {
+    pos <- intersect_points(m)
+    board[pos] <- board[pos] + 1L
+  }
+  
+  sum(board >= 2)
+}
+
+intersect_points <- function(m) {
+  x <- seq.int(m[1], m[2])
+  y <- seq.int(m[3], m[4])
+  cbind(x, y) 
+}
+
+is_horizontal <- function(m) {
+  (m[1] == m[2]) | (m[3] == m[4])
+}
+
+stopifnot(
+  identical(day_05a(x), 8622L),
+  identical(day_05b(x), 22037L)
+)
