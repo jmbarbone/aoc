@@ -9,7 +9,7 @@ def clean_card(card) :
 def card_has_bingo(card) :
     col = card.all(0).any()
     row = card.all(1).any()
-    return col ^ row
+    return col or row
 
 
 def get_cards(x) :
@@ -38,8 +38,8 @@ def play_bingo(calls, cards, method="first") :
         # print(f"Calling number {i}: {calls[i]}")
   
         any_bingo = []
-        # for j in list(set(nr) - set(winners)) :
-        for j in nr :
+        for j in list(set(nr) - set(winners)) :
+        # for j in nr :
             # remove the winners from the checks -- speed?
             # mark the called number as True
             game_cards[j][cards[j] == calls[i]] = True
@@ -64,16 +64,9 @@ def play_bingo(calls, cards, method="first") :
             raise ValueError("method must be 'first' or 'last'")
 
         if bingo : 
-            print(f"BINGO! at {i}")
             break
 
-    print(f"i is at {i}")
-    print(f"number of bingos: {len(winners)}")
-
     if not bingo :
-          not_bingo = list(set(nr) - set(winners))
-          print(f"not bingos: {not_bingo}")
-          # [12, 60, 68]
           raise ValueError("bingo is not True")
  
     # print("the winners are: " + str(winners))
