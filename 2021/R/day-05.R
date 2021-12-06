@@ -8,17 +8,16 @@
 # 2 756 381
 
 intersect_points <- function(m) {
-  # if (is_horizontal) m
-  out <- apply(m, 2, \(i) seq(i[1], i[2]))
+  x <- seq(m[1], m[2])
+  y <- seq(m[3], m[4])
   
-  if (any(lengths(out) == 1L)) {
-    out <- as.matrix(expand.grid(out))
-  } else {
-    stop("haven't made it this far yet")
+  if (length(x) == 1L | length(y) == 1L) {
+    return(as.matrix(expand.grid(x, y)))
   }
   
-  out
+  stop("haven't made it this far yet")
 }
+
 
 is_horizontal <- function(m) {
   (m[1] == m[2]) | (m[3] == m[4])
