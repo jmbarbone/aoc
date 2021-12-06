@@ -15,7 +15,11 @@ intersect_points <- function(m) {
     return(as.matrix(expand.grid(x, y)))
   }
   
-  stop("haven't made it this far yet")
+  if (length(x) != length(y)) {
+    stop("this is wrong?")
+  }
+  
+  cbind(x, y)
 }
 
 
@@ -37,7 +41,7 @@ head(x)
 # get only horizontal lines
 
 are_horizontal <- vapply(x, is_horizontal, NA)
-m <- x[are_horizontal][[1]]
+m <- x[!are_horizontal][[1]]
 
 
 n <- max(unlist(x))
@@ -50,3 +54,13 @@ for (m in x[are_horizontal]) {
 
 res <- sum(board >= 2)
 stopifnot(res == 8622)
+
+board <- matrix(0L, nrow = n, ncol = n)
+
+for (m in x) {
+  pos <- intersect_points(m)
+  board[pos] <- board[pos] + 1L
+}
+
+res <- sum(board >= 2)
+stopifnot(res == 22037)
