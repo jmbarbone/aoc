@@ -18,6 +18,8 @@ x <-
   })
 
 
+# solution ----------------------------------------------------------------
+
 day_05a <- function(x) {
   do_solution(x[vapply(x, is_horizontal, NA)])
 }
@@ -25,6 +27,9 @@ day_05a <- function(x) {
 day_05b <- function(x) {
   do_solution(x)
 }
+
+
+# helpers -----------------------------------------------------------------
 
 do_solution <- function(x) {
   n <- max(unlist(x))
@@ -47,6 +52,9 @@ intersect_points <- function(m) {
 is_horizontal <- function(m) {
   (m[1] == m[2]) | (m[3] == m[4])
 }
+
+
+# checks ------------------------------------------------------------------
 
 stopifnot(
   identical(day_05a(x), 8622L),
