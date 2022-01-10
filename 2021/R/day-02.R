@@ -30,4 +30,4 @@ for (i in s) {
 }
 
 res <- horizontal * depth
-stopifnot(identical(position, 1320534480L))
+stopifnot(identical(res, 1320534480L))
