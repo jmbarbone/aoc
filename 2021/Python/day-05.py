@@ -11,12 +11,6 @@ def day_05a(x) :
     return res
 
 
-# for i,j in make_lines([[1, 4], [1, 5]]):
-# # for i,j in make_lines(x[0]):
-#     print(f"{i},{j}")
-
-  
-
 def day_05b(x) :
     res = do_solution(x)
     return res
@@ -66,12 +60,13 @@ def do_solution(x) :
             if j > m or k > m :
                 raise Exception("What?")
             board[j,k] = board[j,k] + 1
-
+    
     res = (board >= 2).sum()
     return res
 
 
 def max_recursive(x) :
+    # unnest completely flattens a nested list
     return max(pyjordan.unnest(x)) + 1
 
 class testDay04(unittest.TestCase) :
