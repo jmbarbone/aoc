@@ -18,7 +18,7 @@ def day_05b(x) :
 
 def clean_data(x) :
     # this is so easy to understand
-    res = [[[int(k) for k in j.replace("\n", "").split(",")] for j in i.split(" -> ")] for i in x]
+    res = [[[int(k) - 1 for k in j.replace("\n", "").split(",")] for j in i.split(" -> ")] for i in x]
     return res
 
 
@@ -46,8 +46,10 @@ def make_lines(x) :
 
 
 def do_make_lines(x1, x2) :
-    x = [x1, x2]
-    res = range(min(x), max(x) + 1)
+    if x2 >= x1 :
+        res = range(x1, x2 + 1, 1)
+    else :
+        res = range(x1, x2 - 1, -1)
     return res
 
 
@@ -57,8 +59,6 @@ def do_solution(x) :
     
     for i in x :
         for j,k in make_lines(i) :
-            if j > m or k > m :
-                raise Exception("What?")
             board[j,k] = board[j,k] + 1
     
     res = (board >= 2).sum()
