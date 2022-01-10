@@ -1,0 +1,11 @@
+#!/bin/bash
+
+for file in "R"/*.R
+do
+    Rscript --vanilla $file
+done
+
+for file in "python"/*.py
+do 
+    # python $file
+done
