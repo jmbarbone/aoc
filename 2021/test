@@ -2,10 +2,12 @@
 
 for file in "R"/*.R
 do
+    echo "testing $file"
     Rscript --vanilla $file
 done
 
 for file in "python"/*.py
 do 
-    # python $file
+    echo "testing $file"
+    python $file
 done
