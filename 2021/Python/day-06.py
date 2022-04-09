@@ -1,7 +1,5 @@
 import numpy as np
 import unittest
-import pyjordan
-# pip install git+https://github.com/jmbarbone/pyjordan
 
 
 def day_06a(x) :
@@ -30,17 +28,14 @@ def do_solution(x, days=1) :
     for i in range(days) :
         reference = counter.copy()
         
-        # all 8s become 0s
-        
+        # reduce the counter for 1 through 8
         for j in range(0, 8) :
-            # reduce the counter for all other values
             counter[ckeys[j]] = reference[ckeys[j + 1]]
         
         # at 0 create eight and move back to six
         counter["eight"] = reference["zero"]
         counter["six"] = counter["six"] + reference["zero"]
     
-    # print(counter)
     res = np.sum([i for i in counter.values()])
     return res
 
@@ -56,5 +51,4 @@ class testDay06(unittest.TestCase) :
 
 if __name__ == '__main__':
     x = np.loadtxt("data/day-06.txt", dtype=int, delimiter=",")
-    # x = clean_data(x)
     unittest.main()
