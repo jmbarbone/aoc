@@ -45,7 +45,6 @@ do_day_06_solution <- function(x, n) {
 
 
 stopifnot(
-  day_06x(x) == 388739,
   day_06a(x) == 388739,
   day_06b(x) == 1741362314973
 )

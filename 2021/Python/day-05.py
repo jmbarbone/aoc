@@ -69,7 +69,7 @@ def max_recursive(x) :
     # unnest completely flattens a nested list
     return max(pyjordan.unnest(x)) + 1
 
-class testDay04(unittest.TestCase) :
+class testDay05(unittest.TestCase) :
 
     def test_day_05a(self) :
         self.assertEqual(day_05a(x), 8622)
