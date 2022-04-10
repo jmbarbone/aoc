@@ -8,12 +8,15 @@ day_07b <- function(x) {
   ans <- Inf
   
   for (i in unique(x)) {
-    res <- sum(unlist(sapply(abs(x - i), seq_len)))
+    res <- sum(iterative_cumsum(abs(x - i)))
     if (res < ans) ans <- res
   }
   
   ans
 }
+
+iterative_cumsum <- function(n) (n^2 + n) / 2
+reverse_cumsum <- function(n) (-1 + sqrt(1 + 8 * n)) / 2
 
 
 # test --------------------------------------------------------------------
