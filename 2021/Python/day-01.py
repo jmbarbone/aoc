@@ -22,10 +22,10 @@ class testDay01(unittest.TestCase) :
 
     def test_day_01a(self) :
       self.assertEqual(day_01a(x), 1696)
-  
+
     def test_day_01b(self) :
       self.assertEqual(day_01b(x), 1737)
-  
+
 
 if __name__ == '__main__':
     x = np.loadtxt("data/day-01.txt", dtype=int)

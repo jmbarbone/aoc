@@ -64,7 +64,7 @@ class testDay03(unittest.TestCase) :
 
     def test_day_03a(self) :
         self.assertEqual(day_03a(data), 2724524)
-  
+
     def test_day_03b(self) :
         self.assertEqual(day_03b(data), 2775870)
 

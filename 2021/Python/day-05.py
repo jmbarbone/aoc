@@ -31,7 +31,7 @@ def make_lines(x) :
     # Really if it's a square board it doesn't matter
     rx = do_make_lines(x[0][0], x[1][0])
     ry = do_make_lines(x[0][1], x[1][1])
-    
+
     if len(rx) == 1 :
         rx = list(rx)[0]
         rx = iter([rx for i in ry])
@@ -40,7 +40,7 @@ def make_lines(x) :
         ry = iter([ry for i in rx])
     elif len(rx) != len(ry) :
         raise Exception("coordinates are not equal")
-    
+
     res = zip(rx, ry)
     return res
 
@@ -56,11 +56,11 @@ def do_make_lines(x1, x2) :
 def do_solution(x) :
     m = max_recursive(x)
     board = np.full([m, m], 0)
-    
+
     for i in x :
         for j,k in make_lines(i) :
             board[j,k] = board[j,k] + 1
-    
+
     res = (board >= 2).sum()
     return res
 
@@ -73,10 +73,10 @@ class testDay05(unittest.TestCase) :
 
     def test_day_05a(self) :
         self.assertEqual(day_05a(x), 8622)
-  
+
     def test_day_05b(self) :
         self.assertEqual(day_05b(x), 22037)
-  
+
 
 if __name__ == '__main__':
     with open("data/day-05.txt") as f :

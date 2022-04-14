@@ -36,14 +36,14 @@ def play_bingo(calls, cards, method="first") :
 
     for i in nr :
         # print(f"Calling number {i}: {calls[i]}")
-  
+
         any_bingo = []
         for j in list(set(nr) - set(winners)) :
         # for j in nr :
             # remove the winners from the checks -- speed?
             # mark the called number as True
             game_cards[j][cards[j] == calls[i]] = True
-            
+
             # if the game card has any matches, add it to the winner list
             if card_has_bingo(game_cards[j]) :
                 winners.append(j)
@@ -63,12 +63,12 @@ def play_bingo(calls, cards, method="first") :
         else :
             raise ValueError("method must be 'first' or 'last'")
 
-        if bingo : 
+        if bingo :
             break
 
     if not bingo :
           raise ValueError("bingo is not True")
- 
+
     # print("the winners are: " + str(winners))
     # print("the call position is: " + str(i))
     # choose the last one
@@ -83,15 +83,15 @@ class testDay04(unittest.TestCase) :
 
     def test_day_04a(self) :
         self.assertEqual(day_04a(calls, cards), 55770)
-  
+
     def test_day_04b(self) :
         self.assertEqual(day_04b(calls, cards), 2980)
-  
+
 
 if __name__ == '__main__':
     with open("data/day-04.txt") as f :
         x = f.readlines()
-    
+
     calls = [int(i) for i in x[0].rsplit(",")]
     cards = get_cards(x[2:])
     unittest.main()
