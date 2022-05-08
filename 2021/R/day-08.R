@@ -56,8 +56,6 @@ day_08b <- function() {
     sapply(x, \(i) paste(sort(old[match(i, by)]), collapse = ""))
   }
   
-  # y <- lapply(entries, vapply, sort_chars, NA_character_, USE.NAMES = FALSE)
-  # z <- lapply(outputs, vapply, sort_chars, NA_character_, USE.NAMES = FALSE)
   orders <- lapply(entries, f_determine_arrangement)
   
   res <- vapply(
@@ -69,11 +67,9 @@ day_08b <- function() {
 }
 
 f_determine_arrangement <- function(x) {
-  # x <- y[[1]]
   one   <- which(nchar(x) == 2)
   four  <- which(nchar(x) == 4)
   seven <- which(nchar(x) == 3)
-  # eight <- nchar(x) == 7
   
   splits <- strsplit(x, "")
   a <- setdiff(splits[[seven]], splits[[one]])
