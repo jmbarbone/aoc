@@ -1,83 +1,109 @@
 import numpy as np
 import unittest
+from functools import reduce
+import operator
 
+""""
+Count 1, 4, 7, and 8.
+Count the number of segments
+
+(these are nubmers 0 through 9; just squint a bit)
+
+  0:      1:      2:      3:      4:
+ aaaa    ....    aaaa    aaaa    ....
+b    c  .    c  .    c  .    c  b    c
+b    c  .    c  .    c  .    c  b    c
+ ....    ....    dddd    dddd    dddd
+e    f  .    f  e    .  .    f  .    f
+e    f  .    f  e    .  .    f  .    f
+ gggg    ....    gggg    gggg    ....
+
+  5:      6:      7:      8:      9:
+ aaaa    aaaa    aaaa    aaaa    aaaa
+b    .  b    .  .    c  b    c  b    c
+b    .  b    .  .    c  b    c  b    c
+ dddd    dddd    ....    dddd    dddd
+.    f  e    f  .    f  e    f  .    f
+.    f  e    f  .    f  e    f  .    f
+ gggg    gggg    ....    gggg    gggg
+"""
 
 def day_08a() :
+    """
+    Only determine the unique numbers (1, 4, 7, and 8)
+    """
     return np.sum([len(j) in [2, 4, 3, 7] for i in outputs for j in i])
 
 
 def day_08b() :
-    orders = [determine_arrangement(entry) for entry in entries]
-    arrangements = [rearrange_letters(i, j) for i,j in zip(outputs, orders)]
-    values = []
+    """
+    Need to determine new configurations for all lines.
 
-    for a in arrangements :
-        ind = [i for i,j in zip(range(len(old_numbers)), old_numbers) if a == j]
-        ind = ind - 1
-        value = "".join([str(i) for i in ind])
-        value = int(value)
-        values.append(value)
-
+    Possible new configuaration:
+         dddd
+        e    a
+        e    a
+         ffff
+        g    b
+        g    b
+         cccc
+    """
+    configs = [get_config(entry) for entry in entries]
+    arranged = [rearrange_letters(i, j) for i,j in zip(outputs, configs)]
+    values = [make_number(a) for a in arranged]
     return sum(values)
 
     
 def rearrange_letters(x, by) :
     return None
 
-def determine_arrangement(entry) :
-    # Set up some dictionaries to store values
-    numbers = {
-        "zero": [],
-        "one": [],
-        "two": [],
-        "three": [],
-        "four": [],
-        "five": [],
-        "six": [],
-        "seven": [],
-        "eight": [],
-        "nine": []
-    }
-    
-    # letters will be the output.  These are the "positions" 
-    letters = {
-        "a": None,
-        "b": None,
-        "c": None,
-        "d": None,
-        "e": None,
-        "f": None,
-        "g": None
-    }
 
+def get_config(entry) :
+    """
+    Returns a list of congiguration letters
+    """
     for chunk in entry :
         n = len(chunk)
         if n == 2 :
-            numbers["one"] = list(chunk)
+            one = chunk
         elif n == 4 :
-            numbers["four"] = list(chunk)
+            four = chunk
         elif n == 3 :
-            numbers["seven"] = list(chunk)
+            seven = chunk
     
-    letters['a'] = list(setdiff(numbers['seven'], numbers['one']))[0]
-    c_f = intersect(numbers["seven"], numbers['one'])
+    a = list(setdiff(seven, one))[0]
+    c_f = intersect(seven, one)
     a_c_f = c_f.copy()
-    a_c_f.add(letters['a'])
-    b_d = setdiff(numbers['four'], a_c_f)
+    a_c_f.add(a)
+    b_d = setdiff(four, a_c_f)
 
     # 4 is inside 9 (remove a)
-    # a_4 = numbers['four']
-    # g_e = [setdiff(i, j) for i,j in zip(line, )]
-    
-    return letters
+    a_4 = a
+    a_4 = a_4.join(four)
+    g_e = [setdiff(i, a_4) for i in entry]
+    g = list([i for i in g_e if len(i) == 1][0])[0]
+    g_e = reduce(operator.or_, g_e)
+    e = list(setdiff(g_e, g))[0]
+
+    # d has all 
+    d = reduce(operator.and_, [set(chunk) for chunk in entry if len(chunk) == 5])
+    d = list(setdiff(d, [a, g]))[0]
+    b = list(setdiff(b_d, d))[0]
+
+    f = reduce(operator.and_, [set(chunk) for chunk in entry if len(chunk) == 6])
+    f = list(setdiff(f, [a, b, d, g, e]))[0]
+    c = list(setdiff(c_f, f))[0]
+
+    res = [a, b, c, d, e, f, g]
+    return res
 
 
-def rearrange(x, by):
-    x = [i for i in x]
-
-
-def which(x) :
-    return [j for i,j in zip(x, range(len(x))) if i]
+def make_number(a) :
+    ind = [i for i,j in zip(range(len(old_numbers)), old_numbers) if a == j]
+    ind = ind - 1
+    value = "".join([str(i) for i in ind])
+    value = int(value)
+    return(value)
 
 
 def setdiff(x, y) :
