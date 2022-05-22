@@ -124,18 +124,21 @@ def intersect(x, y) :
 
 
 letters = ["a", "b", "c", "d", "e", "f", "g"]
+
+
 numbers = {
-    "abcefg": 1,
-    "cf": 2,
-    "acdeg": 3,
-    "acdfg": 4,
-    "bcdf": 5,
-    "abdfg": 6,
-    "abdefg": 7,
-    "acf": 8,
-    "abcdefg": 9,
-    "abcdfg": 10 
+    "abcefg": 0,
+    "cf": 1,
+    "acdeg": 2,
+    "acdfg": 3,
+    "bcdf": 4,
+    "abdfg": 5,
+    "abdefg": 6,
+    "acf": 7,
+    "abcdefg": 8,
+    "abcdfg": 9 
 }
+
 
 class testDay07(unittest.TestCase) :
 
