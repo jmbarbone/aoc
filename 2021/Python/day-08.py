@@ -49,14 +49,38 @@ def day_08b() :
          cccc
     """
     configs = [get_config(entry) for entry in entries]
-    arranged = [rearrange_letters(i, j) for i,j in zip(outputs, configs)]
-    values = [make_number(a) for a in arranged]
-    return sum(values)
+    new_outputs = [rearrange_letters(output, config) for output,config in zip(outputs, configs)]
+    results = [make_number(new) for new in new_outputs]
+    return sum(results)
 
     
-def rearrange_letters(x, by) :
-    return None
+def rearrange_letters(output, config) :
+    return ["".join(match_letters(list(out), config)) for out in output]
 
+
+def match_letters(out, config) :
+    """Config is ordered abcdefg, so find the index and replace"""
+    res = []
+
+    for o in out :
+        # reset found
+        found = False
+
+        for c,l in zip(config, letters) :
+            if o == c :
+                # when found, append to result
+                found = True
+                res.append(l)
+            if found:
+                # check found, skip to next
+                next
+        # when none are found, just append a None
+        if not found:
+            res.append(None) 
+
+    return sorted(res)
+
+letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
 
 def get_config(entry) :
     """
@@ -98,10 +122,9 @@ def get_config(entry) :
     return res
 
 
-def make_number(a) :
-    ind = [i for i,j in zip(range(len(old_numbers)), old_numbers) if a == j]
-    ind = ind - 1
-    value = "".join([str(i) for i in ind])
+def make_number(new) :
+    numbers = [old_numbers[n] for n in new]
+    value = "".join([str(i) for i in numbers])
     value = int(value)
     return(value)
 
