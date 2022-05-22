@@ -53,34 +53,20 @@ def day_08b() :
     results = [make_number(new) for new in new_outputs]
     return sum(results)
 
-    
+
 def rearrange_letters(output, config) :
     return ["".join(match_letters(list(out), config)) for out in output]
 
 
 def match_letters(out, config) :
     """Config is ordered abcdefg, so find the index and replace"""
-    res = []
-
-    for o in out :
-        # reset found
-        found = False
-
-        for c,l in zip(config, letters) :
-            if o == c :
-                # when found, append to result
-                found = True
-                res.append(l)
-            if found:
-                # check found, skip to next
-                next
-        # when none are found, just append a None
-        if not found:
-            res.append(None) 
-
+    res = [letters[i] for i in match(list(out), config)]
     return sorted(res)
 
-letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
+
+def match(x, y) :
+    return [y.index(i) if i in y else None for i in x]
+
 
 def get_config(entry) :
     """
@@ -123,8 +109,8 @@ def get_config(entry) :
 
 
 def make_number(new) :
-    numbers = [old_numbers[n] for n in new]
-    value = "".join([str(i) for i in numbers])
+    value = [numbers[n] for n in new]
+    value = "".join([str(i) for i in value])
     value = int(value)
     return(value)
 
@@ -137,8 +123,8 @@ def intersect(x, y) :
     return set(x).intersection(set(y))
 
 
-old = ["a", "b", "c", "d", "e", "f", "g"]
-old_numbers = {
+letters = ["a", "b", "c", "d", "e", "f", "g"]
+numbers = {
     "abcefg": 1,
     "cf": 2,
     "acdeg": 3,
