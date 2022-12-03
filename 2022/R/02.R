@@ -1,3 +1,7 @@
+#!/usr/bin/env -S Rscript --vanilla
+
+# info --------------------------------------------------------------------
+
 #     win  = 6 | r > s; s > p; p > r
 #     tie  = 3 | r == r; s == s; r == r
 #     loss = 0 | s < r; p < s; r < p
@@ -19,26 +23,40 @@
 # C Z = 1r + 6w = 7
 # total: 12
 
+
+# solve -------------------------------------------------------------------
+
 x <- read.table("2022/data/02", col.names = c("opponent", "me"))
-solutions <- readLines("2022/solutions/02")
+
+mat <- function(..., by_row = FALSE) {
+  matrix(
+    as.integer(unlist(c(...))),
+    byrow = by_row,
+    ncol = 3L,
+    dimnames = list(
+      opponent = c("A", "B", "C"),
+      me = c("X", "Y", "Z")
+    )
+  )
+}
 
 count <- with(x, table(opponent, me))
-result <- matrix(c(3L, 6L, 0L, 0L, 3L, 6L, 6L, 0L, 3L), byrow = TRUE, nrow = 3)
-dimnames(result) <- dimnames(count)
-play <- matrix(rep(1:3, 3), byrow = TRUE, nrow = 3)
-dimnames(play) <- dimnames(count)
+result <- mat(3L, 6L, 0L, 0L, 3L, 6L, 6L, 0L, 3L, by_row = TRUE)
+play <- mat(rep(1:3, 3), by_row = TRUE)
 
-res1 <- sum(count * (result + play))
+solution1 <- sum(count * (result + play))
 
-result2 <- matrix(rep(c(0L, 3L, 6L), each = 3), ncol = 3)
-dimnames(result2) <- dimnames(count)
-play2 <- matrix(c(3L, 1L, 2L, 1L, 2L, 3L, 2L, 3L, 1L), ncol = 3)
-dimnames(play2) <- dimnames(count)
+result2 <- mat(rep(c(0L, 3L, 6L), each = 3))
+play2 <- mat(3L, 1L, 2L, 1L, 2L, 3L, 2L, 3L, 1L)
 
-res2 <- sum(count * (result2 + play2))
+solution2 <- sum(count * (result2 + play2))
+
+
+# test --------------------------------------------------------------------
+
+solutions <- readLines("2022/solutions/02")
 
 stopifnot(
-  res1 == solutions[1],
-  res2 == solutions[2]
+  solution1 == solutions[1],
+  solution2 == solutions[2]
 )
-

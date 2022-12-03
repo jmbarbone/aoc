@@ -1,25 +1,35 @@
+#!/usr/bin/env -S Rscript --vanilla
+
+# solve -------------------------------------------------------------------
+
 x <- readLines("2022/data/03")
-solutions <- readLines("2022/solutions/03")
-match(a, c(letters, LETTERS))
-sapply(x, function(i) {
-  n <- nchar(i)
-  h <- n %% 2
-  a <- strsplit(x[1:h], "")[[2]]
-  b <- x[(h + 1):n]
-})
 
-splits <- strsplit(x, "")
-splits <- lapply(splits, match, c(letters, LETTERS))
+splits <-
+  x |>
+  strsplit("") |>
+  lapply(match, c(letters, LETTERS))
+
 ns <- lengths(splits)
-half <- ns %/% 2
+half <- ns %/% 2L
 
-left <- mapply(function(i, a, b) i[a:b], i = splits, a = 1, b = half)
-right <- mapply(function(i, a, b) i[a:b], i = splits, a = half + 1, b = ns)
+solution1 <-
+  intersect |>
+  mapply(
+    mapply(function(i, a, b) i[a:b], i = splits, a = 1L, b = half),
+    mapply(function(i, a, b) i[a:b], i = splits, a = half + 1L, b = ns)
+  ) |>
+  sum()
 
-res1 <- sum(mapply(intersect, left, right))
+solution2 <-
+  splits |>
+  split((seq_along(ns) - 1L) %/% 3L) |>
+  vapply(\(i) Reduce(intersect, i), NA_integer_) |>
+  sum()
 
-stopifnot(res1 == solutions[[1]])
+# test --------------------------------------------------------------------
 
-groups <- (seq_along(ns) - 1) %/% 3
-gsplit <- split(splits, groups)
-res2 <- sum(vapply(gsplit, function(i) Reduce(intersect, i), NA_integer_))
+solutions <- readLines("2022/solutions/03")
+stopifnot(
+  solution1 == solutions[1L],
+  solution2 == solutions[2L]
+)

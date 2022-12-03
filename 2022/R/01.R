@@ -1,8 +1,8 @@
+#!/usr/bin/env -S Rscript --vanilla
 
-
+# solve -------------------------------------------------------------------
 x <- readLines("2022/data/01")
 x <- as.integer(x)
-solutions <- readLines("2022/solutions/01")
 
 sums <-
   x |>
@@ -16,6 +16,11 @@ solution_2 <-
   sort(decreasing = TRUE) |>
   head(3) |>
   sum()
+
+
+# test --------------------------------------------------------------------
+
+solutions <- readLines("2022/solutions/01")
 
 stopifnot(
   solution_1 == solutions[1],
