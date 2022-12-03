@@ -1,0 +1,27 @@
+#!/usr/bin/env python3
+
+import os
+import subprocess
+
+
+def main() :
+    # list all files in 2022/R and 2022/python
+    rs = os.listdir(os.path.join("2022", "R"))
+    rs = [os.path.join("2022", "R", i) for i in rs]
+    
+    py = os.listdir(os.path.join("2022", "python"))
+    py = [os.path.join("2022", "python", i) for i in py]
+    
+    scripts = []
+    [scripts.append(i) for i in rs]
+    # [scripts.append(i) for i in py]
+    
+    for script in scripts :
+        print("Running", script)
+        subprocess.run(script)
+
+    return None
+
+
+if __name__ == "__main__" :
+    main()
