@@ -8,9 +8,11 @@ def main() :
     # list all files in 2022/R and 2022/python
     rs = os.listdir(os.path.join("2022", "R"))
     rs = [os.path.join("2022", "R", i) for i in rs]
+    rs.sort()
     
     py = os.listdir(os.path.join("2022", "python"))
     py = [os.path.join("2022", "python", i) for i in py]
+    py.sort()
     
     scripts = []
     [scripts.append(i) for i in rs]
