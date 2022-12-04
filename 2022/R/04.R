@@ -38,7 +38,7 @@ overlapped <- function(x, y) {
 
 }
 
-solution2 <- NULL
+solution2 <- sum(with(df, overlapped(x, y)))
 
 # test --------------------------------------------------------------------
 
