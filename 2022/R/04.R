@@ -11,12 +11,11 @@ parse <- function(x) {
 fully_contained <- function(x, y) {
   x <- parse(x)
   y <- parse(y)
-  mapply(function(a, b) {
-    (a[1] <= b[1] & a[2] >= b[2]) | (a[1] >= b[1] & a[2] <= b[2])
-  },
-  a = x,
-  b = y)
+  mapply(do_fully_contained, x, y)
+}
 
+do_fully_contained <- function(x, y) {
+  (x[1] <= y[1] & x[2] >= y[2]) | (x[1] >= y[1] & x[2] <= y[2])
 }
 
 solution1 <- sum(with(df, fully_contained(x, y)))
@@ -24,18 +23,15 @@ solution1 <- sum(with(df, fully_contained(x, y)))
 overlapped <- function(x, y) {
   x <- parse(x)
   y <- parse(y)
-  mapply(function(a, b) {
+  mapply(do_overlapped, x, y)
+}
 
-    FALSE |
-      (a[1] >= b[1] & a[1] <= b[2]) |
-      (b[1] >= a[1] & b[1] <= a[2]) |
-      (a[2] >= b[1] & a[2] <= b[2]) |
-      (b[2] >= a[1] & b[2] <= a[2]) |
-      FALSE
-  },
-  a = x,
-  b = y)
-
+do_overlapped <- function(x, y) {
+  FALSE |  # just to keep indenting aligned
+    (x[1] >= y[1] & x[1] <= y[2]) |
+    (y[1] >= x[1] & y[1] <= x[2]) |
+    (x[2] >= y[1] & x[2] <= y[2]) |
+    (y[2] >= x[1] & y[2] <= x[2])
 }
 
 solution2 <- sum(with(df, overlapped(x, y)))
