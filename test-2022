@@ -16,7 +16,7 @@ def main() :
     
     scripts = []
     [scripts.append(i) for i in rs]
-    # [scripts.append(i) for i in py]
+    [scripts.append(i) for i in py]
     
     for script in scripts :
         print("Running", script)
