@@ -2,18 +2,28 @@
 # solve -------------------------------------------------------------------
 
 x <- readLines("2022/data/05")
-start <- x[1:8]
-start <- paste0(format(start), " ")
-start <- lapply(strsplit(start, ""), function(x) {
-  sapply(split(x, (seq_along(x) - 1 ) %/% 4), paste0, collapse = "")
+
+# get the starting list.  we end up with a named list of vectors, where the
+# first position is the item on "top" (which will be helpful)
+ls <- x[1:8]
+ls <- paste0(format(ls), " ")
+ls <- lapply(strsplit(ls, ""), function(x) {
+  x <- split(x, (seq_along(x) - 1L) %/% 4L)
+  sapply(x, paste0, collapse = "")
 })
 
-ls <- as.list(as.data.frame(apply(t(Reduce(rbind, start)), 1, \(i) as.character(trimws(i)))))
+ls <- Reduce(rbind, start)
+ls <- t(ls)
+ls <- apply(ls, 1L, \(i) as.character(trimws(i)))
+ls <- as.list(as.data.frame(ls))
 ls <- lapply(ls, function(i) {
   i <- i[i != ""]
   regmatches(i, regexpr("[A-Z]", i))
 })
 
+# get the steps.  the only things that matter here are the numbers, so we just
+# need to know the 3 numbers so we know how to move how much from where to where
+# ie, move {n} from {here} to {there}
 steps <- x[-c(1:10)]
 regmatches(steps, gregexpr("([^0-9])", steps)) <- " "
 steps <- trimws(steps)
@@ -22,7 +32,7 @@ steps <- lapply(steps, as.integer)
 steps <- lapply(steps, setNames, c("n", "here", "there"))
 steps <- lapply(steps, as.list)
 
-# move {this many} from {here} to {there}
+# copy lists for two separate solutions
 ls2 <- ls1 <- ls
 
 for (i in steps) {
