@@ -30,7 +30,7 @@ def main() :
 
     solution2 = np.sum(counts * (result2 + play2))
 
-    return solution1, solution2
+    return [solution1, solution2]
 
 
 if __name__ == "__main__" :
@@ -39,5 +39,3 @@ if __name__ == "__main__" :
 
     if any(results != solutions):
         raise ValueError("Solutions are incorrect")
-
-    print("Day 02 solutions are correct")

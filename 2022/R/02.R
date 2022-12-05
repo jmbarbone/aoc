@@ -41,12 +41,12 @@ mat <- function(..., by_row = FALSE) {
 }
 
 count <- with(x, table(opponent, me))
-result <- mat(3L, 6L, 0L, 0L, 3L, 6L, 6L, 0L, 3L, by_row = TRUE)
-play <- mat(rep(1:3, 3), by_row = TRUE)
+result <- mat(3L, 0L, 6L, 6L, 3L, 0L, 0L, 6L, 3L)
+play <- mat(rep(1:3, each = 3))
 
 solution1 <- sum(count * (result + play))
 
-result2 <- mat(rep(c(0L, 3L, 6L), each = 3))
+result2 <- mat(rep(0:2 * 3, each = 3))
 play2 <- mat(3L, 1L, 2L, 1L, 2L, 3L, 2L, 3L, 1L)
 
 solution2 <- sum(count * (result2 + play2))

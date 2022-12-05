@@ -20,7 +20,7 @@ def main() :
     sums.sort()
 
     solution2 = sum(sums[-3:])
-    return solution1, solution2
+    return [solution1, solution2]
 
 
 
@@ -31,4 +31,4 @@ if __name__ == "__main__" :
     if any(results != solutions):
         raise ValueError("Solutions are incorrect")
 
-    print("Day 01 solutions are correct")
+
