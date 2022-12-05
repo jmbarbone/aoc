@@ -1,39 +1,34 @@
+#! /usr/bin/env python3
 
 import numpy as np
-import unittest
 
 
-def prep() :
-  x = data.split("\n\n")
-  splits = [i.split() for i in x]
-  return [sum([int(e) for e in i]) for i in splits]
-  
-  
-def day_01a() :
-    x = prep()
-    res = max(x)
-    return res
-
-
-def day_01b() :
-    x = prep()
-    x.sort()
-    res = sum(x[-3:])
-    return res
-
-
-class testDay01(unittest.TestCase) :
-
-    def test_day_01a(self) :
-      self.assertEqual(day_01a(), solutions[0])
-
-    def test_day_01b(self) :
-      self.assertEqual(day_01b(), solutions[1])
-
-
-if __name__ == '__main__':
-    solutions = np.loadtxt("2022/solutions/01")
+def main() :
     with open("2022/data/01") as f:
-      data = f.read().rstrip()
-    
-    unittest.main()
+        data = f.read().rstrip().splitlines()
+
+    # there are no 0s in the data
+    data = ["0" if i == "" else i for i in data]
+    data = np.asarray(data, dtype=int)
+
+    id = np.cumsum(data == 0)
+    grouped = [data[np.where(id == i)] for i in np.unique(id)]
+    sums = [sum(i) for i in grouped]
+
+    solution1 = max(sums)
+
+    sums.sort()
+
+    solution2 = sum(sums[-3:])
+    return solution1, solution2
+
+
+
+if __name__ == "__main__" :
+    results = main()
+    solutions = np.loadtxt("2022/solutions/01")
+
+    if any(results != solutions):
+        raise ValueError("Solutions are incorrect")
+
+    print("Day 01 solutions are correct")
