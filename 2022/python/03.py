@@ -56,4 +56,4 @@ if __name__ == "__main__" :
     results = main()
     solutions = np.loadtxt("2022/solutions/03", dtype=int)
     if np.all(results != solutions) :
-        raise ValueError("Day 03 solutions are incorrect")
+        raise ValueError("solutions are incorrect")

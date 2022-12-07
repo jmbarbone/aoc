@@ -29,6 +29,6 @@ if __name__ == "__main__" :
     solutions = np.loadtxt("2022/solutions/01")
 
     if any(results != solutions):
-        raise ValueError("Solutions are incorrect")
+        raise ValueError("solutions are incorrect")
 
 
