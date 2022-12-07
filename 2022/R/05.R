@@ -1,3 +1,4 @@
+#!/usr/bin/env -S Rscript --vanilla
 
 # solve -------------------------------------------------------------------
 
@@ -12,7 +13,7 @@ ls <- lapply(strsplit(ls, ""), function(x) {
   sapply(x, paste0, collapse = "")
 })
 
-ls <- Reduce(rbind, start)
+ls <- Reduce(rbind, ls)
 ls <- t(ls)
 ls <- apply(ls, 1L, \(i) as.character(trimws(i)))
 ls <- as.list(as.data.frame(ls))
