@@ -58,6 +58,35 @@ stopifnot(
   solution1 != 3434
 )
 
+# data <- matrix(c(3,0,3,7,3,2,5,5,1,2,6,5,3,3,2,3,3,5,4,9,3,5,3,9,0), ncol = 5, byrow = TRUE)
+
+scenic_score <- function(x) {
+  do_scenic_score(x) * rev(do_scenic_score(rev(x)))
+}
+
+do_scenic_score <- function(x) {
+  vapply(
+    seq_along(x),
+    function(i) {
+      if (i == 1L) {
+        return(1L)
+      }
+
+      runs <- rle(x[i] > rev(x[seq_len(i - 1L)]))
+
+      if (runs$values[1L]) {
+        runs$lengths[1L] + if (length(runs$values) == 1L) 0L else 1L
+      } else {
+        1L
+      }
+    },
+    NA_integer_
+  )
+}
+
+scores <- t(apply(data, 1L, scenic_score)) * apply(data, 2L, scenic_score)
+solution2 <- max(scores)
+
 # test --------------------------------------------------------------------
 
 solution <- readLines("2022/solutions/08")
