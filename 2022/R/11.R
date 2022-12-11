@@ -4,6 +4,8 @@
 
 env <- new.env()
 
+## functions ----
+
 read_monkeys <- function(path, env = new.env()) {
   data <- readLines(path)
   data <- split(data, cumsum(grepl("^Monkey\\s[0-9]", data)) - 1L)
@@ -11,6 +13,7 @@ read_monkeys <- function(path, env = new.env()) {
     list2env(list(
       start     = parse_start(x[2L]),
       operation = parse_operation(x[3L]),
+      div       = parse_div(x[4L]),
       test      = parse_test(x[4L]),
       true      = parse_true(x[5L]),
       false     = parse_false(x[6L]),
@@ -20,22 +23,28 @@ read_monkeys <- function(path, env = new.env()) {
 }
 
 parse_start <- function(x) {
-  as.integer(strsplit(substr(x, 19L, nchar(x)), ",\\s")[[1L]])
+  res <- strsplit(substr(x, 19L, nchar(x)), ",\\s")[[1L]]
+  res <- as.integer(res)
+  res
 }
 
 parse_operation <- function(x) {
-  body <- parse(text = substr(x, 20L, nchar(x)))
   fun <- function(old) { }
-  body(fun) <- body
   environment(fun) <- env
+  body(fun) <- parse(text = substr(x, 20L, nchar(x)))
   fun
 }
 
+parse_div <- function(x) {
+  as.double(substr(x, 22L, nchar(x)))
+}
+
 parse_test <- function(x) {
-  n <- as.integer(substr(x, 22L, nchar(x)))
+  n <- parse_div(x)
   fun <- function(i) { }
   environment(fun) <- env
-  body(fun) <- substitute(i %% n == 0L)
+  bod <- substitute(i %% n == 0L)
+  body(fun) <- bod
   fun
 }
 
@@ -51,25 +60,32 @@ get_starts <- function(obj) {
   lapply(obj, function(o) o$start)
 }
 
-get_product_2 <- function(obj) {
-  as.integer(prod(sort(sapply(obj, \(i) i$counter), decreasing = TRUE)[1:2]))
+get_product <- function(obj) {
+  prod(sort(sapply(obj, \(i) i$counter), decreasing = TRUE)[1:2])
 }
 
-play_keep_away <- function(monkeys, rounds = 1L) {
+play_keep_away <- function(monkeys, rounds = 1L, div3 = TRUE) {
+  if (div3) {
+    div <- function(x) x %/% 3
+  } else {
+    product <- prod(sapply(monkeys, function(m) m$div))
+    div <- function(x) x %% product
+  }
+
   for (round in seq_len(rounds)) {
     # message("round ", round)
     m <- 0L
     for (monkey in monkeys) {
-      # message("monkey", m)
+      # message("  monkey", m)
       i <- 0L
       for (item in monkey$start) {
-        # if (round == 16 && m == 6 && i == 1) browser()
-        # message("item ", i)
+        # if (round == 1 && m == 1 && i == 0) browser()
+        # message("   item ", i)
         monkey$counter <- monkey$counter + 1L
 
         item <- monkey$operation(item)
+        item <- div(item)
         monkey$start <- monkey$start[-1L]
-        item <- item %/% 3L
 
         if (monkey$test(item)) {
           to <- monkey$true
@@ -86,11 +102,16 @@ play_keep_away <- function(monkeys, rounds = 1L) {
   }
 }
 
+## run ----
+
 monkeys <- read_monkeys("2022/data/11")
 # debugonce(play_keep_away)
 play_keep_away(monkeys, rounds = 20)
-solution1 <- get_product_2(monkeys)
-solution2 <- NULL
+(solution1 <- get_product(monkeys))
+
+monkeys <- read_monkeys("2022/data/11")
+play_keep_away(monkeys, rounds = 10000, div3 = FALSE)
+(solution2 <- get_product(monkeys))
 
 # test --------------------------------------------------------------------
 
@@ -128,8 +149,11 @@ exp_03 <- list(
 
 # play 17 more times
 play_keep_away(monkeys, 17)
-obj <- get_product_2(monkeys)
+obj <- get_product(monkeys)
 exp <- 10605L
+
+monkeys <- read_monkeys("2022/data/11-sample")
+play_keep_away(monkeys, rounds = 20, div3 = TRUE)
 
 stopifnot(
   all.equal(obj_01, exp_01),
