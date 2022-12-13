@@ -107,11 +107,11 @@ play_keep_away <- function(monkeys, rounds = 1L, div3 = TRUE) {
 monkeys <- read_monkeys("2022/data/11")
 # debugonce(play_keep_away)
 play_keep_away(monkeys, rounds = 20)
-(solution1 <- get_product(monkeys))
+solution1 <- get_product(monkeys)
 
 monkeys <- read_monkeys("2022/data/11")
 play_keep_away(monkeys, rounds = 10000, div3 = FALSE)
-(solution2 <- get_product(monkeys))
+solution2 <- get_product(monkeys)
 
 # test --------------------------------------------------------------------
 
