@@ -2,6 +2,8 @@
 
 import os
 import subprocess
+import time
+import sys
 
 
 def main() :
@@ -17,10 +19,15 @@ def main() :
     scripts = []
     [scripts.append(i) for i in rs]
     [scripts.append(i) for i in py]
-    
+    n = max([len(s) for s in scripts])
+
     for script in scripts :
-        print("Running", script)
+        print(script.ljust(n, " "), end=" ... ")
+        sys.stdout.flush()
+        tic = time.perf_counter()
         subprocess.run(script)
+        toc = time.perf_counter()
+        print(f"{toc - tic:0.2f}s".rjust(6, " "))
 
     return None
 
