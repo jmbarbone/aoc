@@ -39,17 +39,14 @@ writeLines(apply(blank_map, 1L, paste0, collapse = ""))
 
 solution1 <- length(spaths$vpath[[1]]) - 1L
 
+paths2 <- igraph::shortest_paths(ig, end, 2, algorithm = "dijkstra")
+solution2 <- length(paths$vpath[[1]]) - 1L
+
 stopifnot(
-  solution1 != 359,
-  solution1 != 78,
-  solution1 != 354,
-  solution1 != 45,
-  solution1 != 35,
-  solution1 != 362,
+  solution2 > 101,
   TRUE
 )
 
-solution2 <- NULL
 
 # test --------------------------------------------------------------------
 
