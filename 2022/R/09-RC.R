@@ -26,14 +26,14 @@ knot <- setRefClass(
 
       if (.self$diff[1L] == 2L) {
         .self$chase_x(env$x)
-        if (diff[2L] == 1L) {
+        if (.self$diff[2L] == 1L) {
           .self$move_y(env$y)
         }
       }
 
       if (.self$diff[2L] == 2L) {
         .self$chase_y(env$y)
-        if (diff[1L] == 1L) {
+        if (.self$diff[1L] == 1L) {
           .self$move_x(env$x)
         }
       }
